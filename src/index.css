@@ -1,105 +1,410 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* === توب رست - نظام التصميم === */
+    --background: 210 30% 98%;
+    --foreground: 210 90% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 210 90% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 210 90% 12%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* الأزرق العميق - اللون الرئيسي */
+    --primary: 210 85% 22%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 210 85% 35%;
+    --primary-glow: 210 85% 50%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* الفيروزي - اللون الثانوي */
+    --accent-water: 190 80% 42%;
+    --accent-water-light: 190 80% 60%;
+    --accent-water-glow: 190 80% 75%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --secondary: 210 40% 92%;
+    --secondary-foreground: 210 85% 22%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 25% 94%;
+    --muted-foreground: 210 30% 50%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --accent: 190 80% 42%;
+    --accent-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --destructive: 0 84% 58%;
+    --destructive-foreground: 0 0% 100%;
 
-    --radius: 0.5rem;
+    --success: 145 65% 42%;
+    --success-foreground: 0 0% 100%;
 
-    --sidebar-background: 0 0% 98%;
+    --warning: 38 92% 52%;
+    --warning-foreground: 0 0% 100%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --border: 210 30% 88%;
+    --input: 210 25% 94%;
+    --ring: 190 80% 42%;
 
-    --sidebar-primary: 240 5.9% 10%;
+    --radius: 0.75rem;
+    --radius-lg: 1.25rem;
+    --radius-xl: 1.75rem;
 
-    --sidebar-primary-foreground: 0 0% 98%;
+    /* التدرجات */
+    --gradient-hero: linear-gradient(135deg, hsl(210 90% 18%) 0%, hsl(195 85% 30%) 50%, hsl(180 75% 40%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 30% 97%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(210 85% 22%) 0%, hsl(190 80% 42%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(190 80% 42%) 0%, hsl(175 75% 55%) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(210 90% 12%) 0%, hsl(210 85% 18%) 100%);
 
-    --sidebar-accent: 240 4.8% 95.9%;
+    /* الظلال */
+    --shadow-sm: 0 2px 8px hsl(210 50% 50% / 0.08);
+    --shadow-md: 0 4px 20px hsl(210 60% 40% / 0.12);
+    --shadow-lg: 0 8px 40px hsl(210 70% 30% / 0.18);
+    --shadow-xl: 0 16px 60px hsl(210 80% 20% / 0.25);
+    --shadow-glow: 0 0 30px hsl(190 80% 42% / 0.35);
+    --shadow-primary: 0 8px 30px hsl(210 85% 22% / 0.35);
 
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    /* Sidebar */
+    --sidebar-background: 210 90% 14%;
+    --sidebar-foreground: 210 30% 92%;
+    --sidebar-primary: 190 80% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 210 80% 22%;
+    --sidebar-accent-foreground: 210 30% 92%;
+    --sidebar-border: 210 70% 20%;
+    --sidebar-ring: 190 80% 50%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    direction: rtl;
+    font-family: 'Tajawal', 'Cairo', sans-serif;
   }
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Tajawal', 'Cairo', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    font-weight: 700;
+  }
+}
+
+@layer components {
+  /* بطاقة زجاجية */
+  .glass-card {
+    background: hsl(var(--card));
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border));
+    box-shadow: var(--shadow-md);
+  }
+
+  /* تأثير مائي للنص */
+  .text-water-gradient {
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-primary-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* بطاقة المنتج */
+  .product-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .product-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+    border-color: hsl(var(--accent-water) / 0.4);
+  }
+
+  /* أزرار مخصصة */
+  .btn-primary {
+    background: var(--gradient-primary);
+    color: hsl(var(--primary-foreground));
+    border-radius: var(--radius);
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    box-shadow: var(--shadow-primary);
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.92;
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-1px);
+  }
+
+  .btn-accent {
+    background: var(--gradient-accent);
+    color: hsl(var(--accent-foreground));
+    border-radius: var(--radius);
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    box-shadow: var(--shadow-glow);
+    transition: all 0.3s ease;
+  }
+
+  .btn-accent:hover {
+    opacity: 0.92;
+    box-shadow: 0 0 40px hsl(190 80% 42% / 0.5);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline-water {
+    border: 2px solid hsl(var(--accent-water));
+    color: hsl(var(--accent-water));
+    background: transparent;
+    border-radius: var(--radius);
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-water:hover {
+    background: hsl(var(--accent-water));
+    color: white;
+  }
+
+  /* شريط التنقل */
+  .navbar-glass {
+    background: hsl(var(--primary) / 0.97);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid hsl(var(--accent-water) / 0.2);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* قسم الهيرو */
+  .hero-gradient {
+    background: var(--gradient-hero);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, hsl(190 80% 42% / 0.3) 0%, transparent 70%);
+  }
+
+  /* شريط جانبي للوحة التحكم */
+  .admin-sidebar {
+    background: var(--gradient-dark);
+    border-left: 1px solid hsl(var(--sidebar-border));
+    box-shadow: var(--shadow-xl);
+  }
+
+  /* بطاقة إحصائية */
+  .stat-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .stat-card:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  /* شارة الحالة */
+  .badge-success {
+    background: hsl(var(--success) / 0.1);
+    color: hsl(var(--success));
+    border: 1px solid hsl(var(--success) / 0.3);
+  }
+
+  .badge-warning {
+    background: hsl(var(--warning) / 0.1);
+    color: hsl(var(--warning));
+    border: 1px solid hsl(var(--warning) / 0.3);
+  }
+
+  .badge-primary {
+    background: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+    border: 1px solid hsl(var(--primary) / 0.3);
+  }
+
+  /* تأثير الموجة */
+  .wave-divider {
+    position: relative;
+  }
+
+  .wave-divider::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0,30 C300,60 900,0 1200,30 L1200,60 L0,60 Z' fill='%23f5f8fc'/%3E%3C/svg%3E") no-repeat center bottom;
+    background-size: cover;
+  }
+
+  /* قائمة الشريط الجانبي */
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    border-radius: var(--radius);
+    color: hsl(var(--sidebar-foreground) / 0.8);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  .sidebar-item:hover {
+    background: hsl(var(--sidebar-accent));
+    color: hsl(var(--sidebar-foreground));
+  }
+
+  .sidebar-item.active {
+    background: hsl(var(--accent-water) / 0.2);
+    color: hsl(var(--sidebar-primary));
+    font-weight: 600;
+    border-right: 3px solid hsl(var(--sidebar-primary));
+  }
+
+  /* تمييز منطقة */
+  .region-card {
+    border: 2px solid hsl(var(--border));
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+
+  .region-card:hover,
+  .region-card.selected {
+    border-color: hsl(var(--accent-water));
+    background: hsl(var(--accent-water) / 0.08);
+    box-shadow: 0 0 0 3px hsl(var(--accent-water) / 0.15);
+  }
+
+  /* بطاقة طريقة الدفع */
+  .payment-method-card {
+    border: 2px solid hsl(var(--border));
+    border-radius: var(--radius);
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .payment-method-card:hover {
+    border-color: hsl(var(--accent-water));
+    background: hsl(var(--accent-water) / 0.05);
+  }
+
+  /* جدول البيانات */
+  .data-table th {
+    background: hsl(var(--muted));
+    color: hsl(var(--muted-foreground));
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 0.75rem 1rem;
+    text-align: right;
+  }
+
+  .data-table td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid hsl(var(--border));
+    font-size: 0.9rem;
+    text-align: right;
+  }
+
+  .data-table tr:hover td {
+    background: hsl(var(--muted) / 0.5);
+  }
+
+  /* شريط البحث */
+  .search-input {
+    background: hsl(var(--input));
+    border: 1.5px solid hsl(var(--border));
+    border-radius: var(--radius);
+    padding: 0.625rem 1rem;
+    font-family: 'Tajawal', sans-serif;
+    transition: all 0.2s ease;
+    width: 100%;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: hsl(var(--accent-water));
+    box-shadow: 0 0 0 3px hsl(var(--accent-water) / 0.15);
+  }
+
+  /* تأثيرات للشريط الجانبي */
+  @keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes fadeUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes pulse-water {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(190 80% 42% / 0.4); }
+    50% { box-shadow: 0 0 0 10px hsl(190 80% 42% / 0); }
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .animate-pulse-water {
+    animation: pulse-water 2s infinite;
+  }
+
+  /* تخصيص شريط التمرير */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--accent-water) / 0.5);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--accent-water));
   }
 }
