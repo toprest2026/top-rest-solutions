@@ -1,219 +1,302 @@
 import React from "react";
+import { motion } from "framer-motion";
 import {
-  TrendingUp,
-  ShoppingBag,
-  Users,
+  ShoppingCart,
+  DollarSign,
   Package,
-  ArrowUpRight,
-  MapPin,
-  Clock,
-  CheckCircle,
-  Truck,
-  AlertCircle,
+  Users,
+  TrendingUp,
+  TrendingDown,
+  Receipt,
 } from "lucide-react";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
+import StatCard from "@/components/dashboard/StatCard";
 
-const stats = [
-  {
-    label: "إجمالي المبيعات",
-    value: "48,250 ر.س",
-    change: "+12.5%",
-    positive: true,
-    icon: TrendingUp,
-    color: "from-primary to-primary-light",
-  },
-  {
-    label: "الطلبات اليوم",
-    value: "142",
-    change: "+8.3%",
-    positive: true,
-    icon: ShoppingBag,
-    color: "from-accent-water to-accent-water-light",
-  },
-  {
-    label: "العملاء النشطون",
-    value: "3,891",
-    change: "+5.1%",
-    positive: true,
-    icon: Users,
-    color: "from-success to-success",
-  },
-  {
-    label: "المنتجات المتاحة",
-    value: "24",
-    change: "+2",
-    positive: true,
-    icon: Package,
-    color: "from-warning to-warning",
-  },
+const salesData = [
+  { month: "يناير", sales: 45000, purchases: 32000 },
+  { month: "فبراير", sales: 52000, purchases: 28000 },
+  { month: "مارس", sales: 48000, purchases: 35000 },
+  { month: "أبريل", sales: 61000, purchases: 30000 },
+  { month: "مايو", sales: 55000, purchases: 42000 },
+  { month: "يونيو", sales: 67000, purchases: 38000 },
+  { month: "يوليو", sales: 72000, purchases: 45000 },
 ];
 
-const recentOrders = [
-  { id: "#TR-4521", customer: "أحمد محمد", region: "الرياض", amount: "75 ر.س", status: "مكتمل", time: "منذ 5 دقائق" },
-  { id: "#TR-4520", customer: "فاطمة علي", region: "جدة", amount: "150 ر.س", status: "قيد التوصيل", time: "منذ 12 دقيقة" },
-  { id: "#TR-4519", customer: "محمد سالم", region: "الدمام", amount: "45 ر.س", status: "قيد المراجعة", time: "منذ 25 دقيقة" },
-  { id: "#TR-4518", customer: "نورة الغامدي", region: "مكة المكرمة", amount: "220 ر.س", status: "مكتمل", time: "منذ 1 ساعة" },
-  { id: "#TR-4517", customer: "عبدالله الشمري", region: "الرياض", amount: "90 ر.س", status: "ملغي", time: "منذ 2 ساعة" },
+const topProducts = [
+  { name: "جالون مياه 19 لتر", sales: 1200 },
+  { name: "مياه 1.5 لتر", sales: 950 },
+  { name: "كرتون 6 جالون", sales: 800 },
+  { name: "مياه 500 مل", sales: 750 },
+  { name: "برادة مياه", sales: 320 },
 ];
 
-const regionPerformance = [
-  { region: "الرياض", orders: 540, revenue: "22,500 ر.س", percentage: 85 },
-  { region: "جدة", orders: 320, revenue: "13,800 ر.س", percentage: 65 },
-  { region: "مكة المكرمة", orders: 180, revenue: "7,200 ر.س", percentage: 45 },
-  { region: "الدمام", orders: 120, revenue: "4,750 ر.س", percentage: 30 },
+const categoryData = [
+  { name: "جالونات", value: 40 },
+  { name: "قوارير", value: 25 },
+  { name: "عروض", value: 20 },
+  { name: "أجهزة", value: 15 },
 ];
 
-const getStatusColor = (status: string) => {
+const COLORS = [
+  "hsl(174, 72%, 46%)",
+  "hsl(199, 89%, 48%)",
+  "hsl(142, 72%, 42%)",
+  "hsl(38, 92%, 50%)",
+];
+
+const recentInvoices = [
+  { id: "INV-001", client: "شركة الفجر", amount: "12,500", status: "مدفوعة", vat: "1,875" },
+  { id: "INV-002", client: "مؤسسة النور", amount: "8,200", status: "معلقة", vat: "1,230" },
+  { id: "INV-003", client: "شركة الأمل", amount: "25,000", status: "مدفوعة", vat: "3,750" },
+  { id: "INV-004", client: "مكتب الشرق", amount: "5,800", status: "متأخرة", vat: "870" },
+  { id: "INV-005", client: "مجموعة السلام", amount: "18,300", status: "مدفوعة", vat: "2,745" },
+];
+
+const getInvoiceStatusColor = (status: string) => {
   switch (status) {
-    case "مكتمل": return "badge-success";
-    case "قيد التوصيل": return "badge-primary";
-    case "قيد المراجعة": return "badge-warning";
-    case "ملغي": return "text-destructive bg-destructive/10 border border-destructive/30";
-    default: return "badge-primary";
-  }
-};
-
-const getStatusIcon = (status: string) => {
-  switch (status) {
-    case "مكتمل": return <CheckCircle className="w-3 h-3" />;
-    case "قيد التوصيل": return <Truck className="w-3 h-3" />;
-    case "قيد المراجعة": return <Clock className="w-3 h-3" />;
-    case "ملغي": return <AlertCircle className="w-3 h-3" />;
-    default: return null;
+    case "مدفوعة": return "text-success bg-success/10";
+    case "معلقة": return "text-warning bg-warning/10";
+    case "متأخرة": return "text-destructive bg-destructive/10";
+    default: return "text-muted-foreground bg-muted";
   }
 };
 
 const DashboardOverview: React.FC = () => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" dir="rtl">
       {/* Page Title */}
-      <div>
-        <h1 className="text-2xl font-display font-black text-foreground">نظرة عامة</h1>
-        <p className="text-muted-foreground text-sm font-arabic mt-1">
-          الخميس، 20 فبراير 2025 — آخر تحديث: منذ 3 دقائق
-        </p>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        <h1 className="text-2xl font-display font-black text-foreground">لوحة التحكم</h1>
+        <p className="text-muted-foreground text-sm font-arabic mt-1">نظرة عامة على أداء النظام</p>
+      </motion.div>
 
-      {/* Stats Grid */}
+      {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat) => (
-          <div key={stat.label} className="stat-card p-5">
-            <div className="flex items-center justify-between mb-3">
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}>
-                <stat.icon className="w-5 h-5 text-white" />
-              </div>
-              <div className={`flex items-center gap-1 text-xs font-bold rounded-full px-2 py-1 ${
-                stat.positive ? "text-success bg-success/10" : "text-destructive bg-destructive/10"
-              }`}>
-                <ArrowUpRight className="w-3 h-3" />
-                {stat.change}
-              </div>
-            </div>
-            <p className="text-2xl font-display font-black text-foreground mb-1">{stat.value}</p>
-            <p className="text-muted-foreground text-xs font-arabic">{stat.label}</p>
-          </div>
-        ))}
+        <StatCard
+          title="إجمالي المبيعات"
+          value="٤٨,٢٥٠ ر.س"
+          change="+12.5%"
+          positive={true}
+          icon={DollarSign}
+          color="hsl(174, 72%, 46%)"
+          index={0}
+        />
+        <StatCard
+          title="الطلبات"
+          value="٣٤٢"
+          change="+8.3%"
+          positive={true}
+          icon={ShoppingCart}
+          color="hsl(199, 89%, 48%)"
+          index={1}
+        />
+        <StatCard
+          title="المنتجات"
+          value="٢٤"
+          change="+2"
+          positive={true}
+          icon={Package}
+          color="hsl(142, 72%, 42%)"
+          index={2}
+        />
+        <StatCard
+          title="العملاء"
+          value="٣,٨٩١"
+          change="+5.1%"
+          positive={true}
+          icon={Users}
+          color="hsl(38, 92%, 50%)"
+          index={3}
+        />
       </div>
 
-      {/* Two Column Layout */}
+      {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent Orders */}
-        <div className="lg:col-span-2 glass-card rounded-2xl overflow-hidden">
-          <div className="px-5 py-4 border-b border-border flex items-center justify-between">
-            <h3 className="font-display font-bold text-foreground">آخر الطلبات</h3>
-            <button className="text-accent-water text-xs font-arabic hover:underline flex items-center gap-1">
-              عرض الكل
-              <ArrowUpRight className="w-3 h-3" />
-            </button>
+        {/* Sales Chart */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="lg:col-span-2 bg-card border border-border rounded-2xl p-5"
+        >
+          <h3 className="font-display font-bold text-foreground mb-4">المبيعات والمشتريات</h3>
+          <div className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={salesData}>
+                <defs>
+                  <linearGradient id="salesGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="hsl(174, 72%, 46%)" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="hsl(174, 72%, 46%)" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="purchasesGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="hsl(199, 89%, 48%)" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="hsl(199, 89%, 48%)" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(0, 0%, 90%)" />
+                <XAxis dataKey="month" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "hsl(0, 0%, 100%)",
+                    border: "1px solid hsl(0, 0%, 90%)",
+                    borderRadius: "12px",
+                    fontSize: "12px",
+                    fontFamily: "Cairo",
+                  }}
+                  formatter={(value: number, name: string) => [
+                    `${value.toLocaleString("ar-SA")} ر.س`,
+                    name === "sales" ? "المبيعات" : "المشتريات",
+                  ]}
+                />
+                <Area type="monotone" dataKey="sales" stroke="hsl(174, 72%, 46%)" fill="url(#salesGrad)" strokeWidth={2.5} />
+                <Area type="monotone" dataKey="purchases" stroke="hsl(199, 89%, 48%)" fill="url(#purchasesGrad)" strokeWidth={2.5} />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full data-table">
-              <thead>
-                <tr>
-                  <th>رقم الطلب</th>
-                  <th>العميل</th>
-                  <th>المنطقة</th>
-                  <th>المبلغ</th>
-                  <th>الحالة</th>
-                  <th>الوقت</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentOrders.map((order) => (
-                  <tr key={order.id}>
-                    <td className="font-bold text-primary">{order.id}</td>
-                    <td>{order.customer}</td>
-                    <td>
-                      <div className="flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-muted-foreground" />
-                        {order.region}
-                      </div>
-                    </td>
-                    <td className="font-bold">{order.amount}</td>
-                    <td>
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${getStatusColor(order.status)}`}>
-                        {getStatusIcon(order.status)}
-                        {order.status}
-                      </span>
-                    </td>
-                    <td className="text-muted-foreground text-xs">
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {order.time}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        </motion.div>
 
-        {/* Region Performance */}
-        <div className="glass-card rounded-2xl overflow-hidden">
-          <div className="px-5 py-4 border-b border-border">
-            <h3 className="font-display font-bold text-foreground">أداء المناطق</h3>
+        {/* Pie Chart */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="bg-card border border-border rounded-2xl p-5"
+        >
+          <h3 className="font-display font-bold text-foreground mb-4">التصنيفات</h3>
+          <div className="h-48">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={categoryData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} dataKey="value" paddingAngle={4}>
+                  {categoryData.map((_, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value: number) => [`${value}%`]} />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
-          <div className="p-4 space-y-4">
-            {regionPerformance.map((r) => (
-              <div key={r.region}>
-                <div className="flex items-center justify-between mb-1.5">
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-accent-water" />
-                    <span className="font-arabic text-sm font-semibold text-foreground">{r.region}</span>
-                  </div>
-                  <span className="text-xs text-muted-foreground">{r.orders} طلب</span>
+          <div className="space-y-2 mt-2">
+            {categoryData.map((item, i) => (
+              <div key={item.name} className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[i] }} />
+                  <span className="font-arabic text-foreground">{item.name}</span>
                 </div>
-                <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-primary to-accent-water rounded-full transition-all duration-700"
-                    style={{ width: `${r.percentage}%` }}
-                  />
-                </div>
-                <p className="text-xs text-accent-water font-bold mt-1">{r.revenue}</p>
+                <span className="font-bold text-muted-foreground">{item.value}%</span>
               </div>
             ))}
           </div>
+        </motion.div>
+      </div>
 
-          {/* Quick Actions */}
-          <div className="px-4 pb-4">
-            <p className="text-xs text-muted-foreground font-arabic mb-3 font-bold">إجراءات سريعة</p>
-            <div className="grid grid-cols-2 gap-2">
-              <button className="bg-primary/10 text-primary text-xs py-2 px-3 rounded-lg font-arabic hover:bg-primary/20 transition-colors font-semibold">
-                طلب جديد
-              </button>
-              <button className="bg-accent-water/10 text-accent-water text-xs py-2 px-3 rounded-lg font-arabic hover:bg-accent-water/20 transition-colors font-semibold">
-                تقرير يومي
-              </button>
-              <button className="bg-success/10 text-success text-xs py-2 px-3 rounded-lg font-arabic hover:bg-success/20 transition-colors font-semibold">
-                فاتورة ضريبية
-              </button>
-              <button className="bg-warning/10 text-warning text-xs py-2 px-3 rounded-lg font-arabic hover:bg-warning/20 transition-colors font-semibold">
-                تنبيه مخزون
-              </button>
-            </div>
+      {/* Bottom Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Top Products */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="bg-card border border-border rounded-2xl p-5"
+        >
+          <h3 className="font-display font-bold text-foreground mb-4">أكثر المنتجات مبيعاً</h3>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={topProducts} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(0, 0%, 90%)" horizontal={false} />
+                <XAxis type="number" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis type="category" dataKey="name" fontSize={12} tickLine={false} axisLine={false} width={100} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "hsl(0, 0%, 100%)",
+                    border: "1px solid hsl(0, 0%, 90%)",
+                    borderRadius: "12px",
+                    fontSize: "12px",
+                  }}
+                  formatter={(value: number) => [`${value} طلب`, "المبيعات"]}
+                />
+                <Bar dataKey="sales" fill="hsl(174, 72%, 46%)" radius={[0, 8, 8, 0]} barSize={20} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
+
+        {/* Recent Invoices */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="bg-card border border-border rounded-2xl p-5"
+        >
+          <h3 className="font-display font-bold text-foreground mb-4">آخر الفواتير</h3>
+          <div className="space-y-3">
+            {recentInvoices.map((inv) => (
+              <div key={inv.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-xl hover:bg-muted transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <Receipt className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-arabic font-semibold text-foreground text-sm">{inv.client}</p>
+                    <p className="text-xs text-muted-foreground font-arabic">{inv.id} · ضريبة: {inv.vat} ر.س</p>
+                  </div>
+                </div>
+                <div className="text-left">
+                  <p className="font-display font-bold text-foreground text-sm">{inv.amount} ر.س</p>
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${getInvoiceStatusColor(inv.status)}`}>
+                    {inv.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* VAT Summary */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.7 }}
+        className="bg-card border border-border rounded-2xl p-5"
+      >
+        <h3 className="font-display font-bold text-foreground mb-4">ملخص ضريبة القيمة المضافة (15%)</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="bg-success/5 border border-success/20 rounded-xl p-4 text-center">
+            <p className="text-sm text-muted-foreground font-arabic mb-1">ضريبة المبيعات</p>
+            <p className="text-xl font-display font-black text-success">٦٠,٠٠٠ ر.س</p>
+          </div>
+          <div className="bg-destructive/5 border border-destructive/20 rounded-xl p-4 text-center">
+            <p className="text-sm text-muted-foreground font-arabic mb-1">ضريبة المشتريات</p>
+            <p className="text-xl font-display font-black text-destructive">٣٧,٥٠٠ ر.س</p>
+          </div>
+          <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 text-center">
+            <p className="text-sm text-muted-foreground font-arabic mb-1">صافي الضريبة المستحقة</p>
+            <p className="text-xl font-display font-black text-primary">٢٢,٥٠٠ ر.س</p>
+          </div>
+          <div className="bg-warning/5 border border-warning/20 rounded-xl p-4 text-center">
+            <p className="text-sm text-muted-foreground font-arabic mb-1">موعد التسليم القادم</p>
+            <p className="text-xl font-display font-black text-warning">٣٠ مارس</p>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
