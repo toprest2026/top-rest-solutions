@@ -7,6 +7,8 @@ import SuppliersManager from "@/components/admin/SuppliersManager";
 import SeoManager from "@/components/admin/SeoManager";
 import BannersManager from "@/components/admin/BannersManager";
 import WebhookManager from "@/components/admin/WebhookManager";
+import SubscriptionsManager from "@/components/admin/SubscriptionsManager";
+import ContractsManager from "@/components/admin/ContractsManager";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Store } from "lucide-react";
 
@@ -15,6 +17,8 @@ export type AdminSection =
   | "products"
   | "orders"
   | "suppliers"
+  | "subscriptions"
+  | "contracts"
   | "seo"
   | "banners"
   | "webhooks";
@@ -29,6 +33,8 @@ const AdminDashboard: React.FC = () => {
       case "products": return <ProductsManager />;
       case "orders": return <OrdersManager />;
       case "suppliers": return <SuppliersManager />;
+      case "subscriptions": return <SubscriptionsManager />;
+      case "contracts": return <ContractsManager />;
       case "seo": return <SeoManager />;
       case "banners": return <BannersManager />;
       case "webhooks": return <WebhookManager />;
