@@ -12,6 +12,8 @@ import {
   BarChart3,
   Tag,
   Truck,
+  Crown,
+  FileText,
 } from "lucide-react";
 import { AdminSection } from "@/pages/AdminDashboard";
 
@@ -46,6 +48,17 @@ const navItems = [
     label: "الموردون",
     icon: Truck,
     badge: null,
+  },
+  {
+    id: "subscriptions" as AdminSection,
+    label: "الاشتراكات — SaaS",
+    icon: Crown,
+    badge: null,
+  },
+  {
+    id: "contracts" as AdminSection,
+    label: "العقود والتعاقدات",
+    icon: FileText,
   },
   {
     id: "banners" as AdminSection,
