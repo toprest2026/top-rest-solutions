@@ -139,6 +139,72 @@ export type Database = {
         }
         Relationships: []
       }
+      contracts: {
+        Row: {
+          contract_number: string | null
+          created_at: string | null
+          end_date: string
+          id: string
+          signed_at: string | null
+          signed_by: string | null
+          start_date: string
+          status: string | null
+          subscription_id: string | null
+          supplier_id: string
+          terms_ar: string | null
+          title_ar: string
+          updated_at: string | null
+          value: number | null
+        }
+        Insert: {
+          contract_number?: string | null
+          created_at?: string | null
+          end_date: string
+          id?: string
+          signed_at?: string | null
+          signed_by?: string | null
+          start_date: string
+          status?: string | null
+          subscription_id?: string | null
+          supplier_id: string
+          terms_ar?: string | null
+          title_ar: string
+          updated_at?: string | null
+          value?: number | null
+        }
+        Update: {
+          contract_number?: string | null
+          created_at?: string | null
+          end_date?: string
+          id?: string
+          signed_at?: string | null
+          signed_by?: string | null
+          start_date?: string
+          status?: string | null
+          subscription_id?: string | null
+          supplier_id?: string
+          terms_ar?: string | null
+          title_ar?: string
+          updated_at?: string | null
+          value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contracts_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "supplier_subscriptions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "contracts_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       coupons: {
         Row: {
           active: boolean | null
@@ -582,6 +648,177 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      subscription_invoices: {
+        Row: {
+          amount: number
+          created_at: string | null
+          due_date: string
+          id: string
+          invoice_number: string | null
+          paid_at: string | null
+          status: string | null
+          subscription_id: string
+          supplier_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          due_date: string
+          id?: string
+          invoice_number?: string | null
+          paid_at?: string | null
+          status?: string | null
+          subscription_id: string
+          supplier_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          due_date?: string
+          id?: string
+          invoice_number?: string | null
+          paid_at?: string | null
+          status?: string | null
+          subscription_id?: string
+          supplier_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_invoices_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "supplier_subscriptions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscription_invoices_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscription_plans: {
+        Row: {
+          active: boolean | null
+          created_at: string | null
+          description_ar: string | null
+          features: Json | null
+          has_cash_van: boolean | null
+          has_custom_domain: boolean | null
+          has_dedicated_page: boolean | null
+          has_driver_radar: boolean | null
+          id: string
+          max_orders: number | null
+          max_products: number | null
+          name_ar: string
+          name_en: string | null
+          price_monthly: number
+          price_yearly: number | null
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string | null
+          description_ar?: string | null
+          features?: Json | null
+          has_cash_van?: boolean | null
+          has_custom_domain?: boolean | null
+          has_dedicated_page?: boolean | null
+          has_driver_radar?: boolean | null
+          id?: string
+          max_orders?: number | null
+          max_products?: number | null
+          name_ar: string
+          name_en?: string | null
+          price_monthly?: number
+          price_yearly?: number | null
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string | null
+          description_ar?: string | null
+          features?: Json | null
+          has_cash_van?: boolean | null
+          has_custom_domain?: boolean | null
+          has_dedicated_page?: boolean | null
+          has_driver_radar?: boolean | null
+          id?: string
+          max_orders?: number | null
+          max_products?: number | null
+          name_ar?: string
+          name_en?: string | null
+          price_monthly?: number
+          price_yearly?: number | null
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      supplier_subscriptions: {
+        Row: {
+          auto_renew: boolean | null
+          created_at: string | null
+          end_date: string | null
+          id: string
+          notes: string | null
+          payment_method: string | null
+          plan_id: string
+          start_date: string | null
+          status: string
+          supplier_id: string
+          total_paid: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          auto_renew?: boolean | null
+          created_at?: string | null
+          end_date?: string | null
+          id?: string
+          notes?: string | null
+          payment_method?: string | null
+          plan_id: string
+          start_date?: string | null
+          status?: string
+          supplier_id: string
+          total_paid?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          auto_renew?: boolean | null
+          created_at?: string | null
+          end_date?: string | null
+          id?: string
+          notes?: string | null
+          payment_method?: string | null
+          plan_id?: string
+          start_date?: string | null
+          status?: string
+          supplier_id?: string
+          total_paid?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supplier_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "supplier_subscriptions_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       suppliers: {
         Row: {
