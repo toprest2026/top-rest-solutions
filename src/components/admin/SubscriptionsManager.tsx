@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Crown, Users, FileText, Plus, Eye, Edit2, Trash2, CheckCircle, XCircle, Clock, CreditCard, Star, Zap, Rocket } from "lucide-react";
+import { Crown, Users, FileText, Plus, Eye, Edit2, Trash2, CheckCircle, XCircle, Clock, CreditCard, Star, Zap, Rocket, RefreshCw, Ban } from "lucide-react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 interface Plan {
   id: string;
@@ -39,6 +40,9 @@ const SubscriptionsManager: React.FC = () => {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [activeTab, setActiveTab] = useState<"plans" | "subscribers">("plans");
   const [loading, setLoading] = useState(true);
+  const [showAddSub, setShowAddSub] = useState(false);
+  const [suppliers, setSuppliers] = useState<{ id: string; name_ar: string }[]>([]);
+  const [newSub, setNewSub] = useState({ supplier_id: "", plan_id: "", months: 1 });
 
   useEffect(() => {
     fetchData();
@@ -46,13 +50,46 @@ const SubscriptionsManager: React.FC = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const [plansRes, subsRes] = await Promise.all([
+    const [plansRes, subsRes, suppliersRes] = await Promise.all([
       supabase.from("subscription_plans").select("*").order("sort_order"),
       supabase.from("supplier_subscriptions").select("*, suppliers(name_ar, phone, email), subscription_plans(name_ar, price_monthly)").order("created_at", { ascending: false }),
+      supabase.from("suppliers").select("id, name_ar").eq("active", true),
     ]);
     if (plansRes.data) setPlans(plansRes.data.map(p => ({ ...p, features: (p.features as string[]) || [] })));
     if (subsRes.data) setSubscriptions(subsRes.data as unknown as Subscription[]);
+    if (suppliersRes.data) setSuppliers(suppliersRes.data);
     setLoading(false);
+  };
+
+  const handleCreateSubscription = async () => {
+    if (!newSub.supplier_id || !newSub.plan_id) {
+      toast.error("اختر المورد والباقة");
+      return;
+    }
+    const plan = plans.find(p => p.id === newSub.plan_id);
+    if (!plan) return;
+
+    const startDate = new Date().toISOString().split("T")[0];
+    const endDate = new Date(Date.now() + newSub.months * 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+
+    const { error } = await supabase.from("supplier_subscriptions").insert({
+      supplier_id: newSub.supplier_id,
+      plan_id: newSub.plan_id,
+      status: "active",
+      start_date: startDate,
+      end_date: endDate,
+      total_paid: plan.price_monthly * newSub.months,
+    });
+
+    if (error) {
+      toast.error("خطأ في إنشاء الاشتراك");
+      console.error(error);
+    } else {
+      toast.success("تم إنشاء الاشتراك بنجاح");
+      setShowAddSub(false);
+      setNewSub({ supplier_id: "", plan_id: "", months: 1 });
+      fetchData();
+    }
   };
 
   const statusBadge = (status: string) => {
@@ -86,6 +123,13 @@ const SubscriptionsManager: React.FC = () => {
             {subscriptions.filter(s => s.status === "active").length} مشترك نشط — {plans.length} باقات
           </p>
         </div>
+        <button
+          onClick={() => setShowAddSub(true)}
+          className="btn-primary px-5 py-2.5 text-sm flex items-center gap-2 rounded-xl"
+        >
+          <Plus className="w-4 h-4" />
+          إضافة مشترك
+        </button>
       </div>
 
       {/* Tabs */}
@@ -250,6 +294,76 @@ const SubscriptionsManager: React.FC = () => {
               </table>
             </div>
           )}
+        </div>
+      )}
+      {/* Add Subscription Modal */}
+      {showAddSub && (
+        <div className="fixed inset-0 bg-foreground/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-card rounded-2xl p-6 w-full max-w-md shadow-water-xl">
+            <h3 className="font-display font-bold text-foreground text-lg mb-5 flex items-center gap-2">
+              <Plus className="w-5 h-5 text-accent-water" />
+              إضافة مشترك جديد
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-arabic text-muted-foreground mb-1 block">المورد</label>
+                <select
+                  className="search-input"
+                  value={newSub.supplier_id}
+                  onChange={e => setNewSub(s => ({ ...s, supplier_id: e.target.value }))}
+                >
+                  <option value="">اختر المورد...</option>
+                  {suppliers.map(s => (
+                    <option key={s.id} value={s.id}>{s.name_ar}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-arabic text-muted-foreground mb-1 block">الباقة</label>
+                <select
+                  className="search-input"
+                  value={newSub.plan_id}
+                  onChange={e => setNewSub(s => ({ ...s, plan_id: e.target.value }))}
+                >
+                  <option value="">اختر الباقة...</option>
+                  {plans.map(p => (
+                    <option key={p.id} value={p.id}>{p.name_ar} — {p.price_monthly} ر.س/شهر</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-arabic text-muted-foreground mb-1 block">مدة الاشتراك (أشهر)</label>
+                <select
+                  className="search-input"
+                  value={newSub.months}
+                  onChange={e => setNewSub(s => ({ ...s, months: Number(e.target.value) }))}
+                >
+                  {[1, 3, 6, 12].map(m => (
+                    <option key={m} value={m}>{m} {m === 1 ? "شهر" : "أشهر"}</option>
+                  ))}
+                </select>
+              </div>
+              {newSub.plan_id && (
+                <div className="bg-muted rounded-xl p-3 text-sm">
+                  <p className="text-muted-foreground">الإجمالي المطلوب:</p>
+                  <p className="text-xl font-display font-black text-primary">
+                    {(plans.find(p => p.id === newSub.plan_id)?.price_monthly || 0) * newSub.months} ر.س
+                  </p>
+                </div>
+              )}
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button onClick={handleCreateSubscription} className="btn-primary flex-1 py-2.5 text-sm rounded-xl">
+                تفعيل الاشتراك
+              </button>
+              <button
+                onClick={() => setShowAddSub(false)}
+                className="btn-outline-water flex-1 py-2.5 text-sm rounded-xl"
+              >
+                إلغاء
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
