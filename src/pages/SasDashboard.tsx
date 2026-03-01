@@ -1,15 +1,31 @@
 import React, { useState } from "react";
-import AdminSidebar from "@/components/admin/AdminSidebar";
 import SubscriptionsManager from "@/components/admin/SubscriptionsManager";
 import ContractsManager from "@/components/admin/ContractsManager";
+import InvoicesManager from "@/components/admin/InvoicesManager";
+import PermissionsManager from "@/components/admin/PermissionsManager";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Crown, FileText } from "lucide-react";
-import type { AdminSection } from "./AdminDashboard";
+import { ArrowLeft, Crown, FileText, Receipt, Shield, CreditCard, BarChart3 } from "lucide-react";
 
-type SasTab = "subscriptions" | "contracts";
+type SasTab = "subscriptions" | "contracts" | "invoices" | "permissions";
+
+const tabs = [
+  { id: "subscriptions" as SasTab, label: "الباقات والمشتركين", icon: Crown },
+  { id: "contracts" as SasTab, label: "العقود", icon: FileText },
+  { id: "invoices" as SasTab, label: "الفواتير", icon: Receipt },
+  { id: "permissions" as SasTab, label: "الصلاحيات", icon: Shield },
+];
 
 const SasDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<SasTab>("subscriptions");
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "subscriptions": return <SubscriptionsManager />;
+      case "contracts": return <ContractsManager />;
+      case "invoices": return <InvoicesManager />;
+      case "permissions": return <PermissionsManager />;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-muted/30 font-arabic" dir="rtl">
@@ -20,8 +36,8 @@ const SasDashboard: React.FC = () => {
             <Crown className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="font-display font-bold text-foreground text-sm">لوحة تحكم المشتركين — SaaS</p>
-            <p className="text-muted-foreground text-xs">إدارة الباقات والعقود والاشتراكات</p>
+            <p className="font-display font-bold text-foreground text-sm">لوحة تحكم SaaS — إدارة المشتركين</p>
+            <p className="text-muted-foreground text-xs">الباقات والعقود والفواتير والصلاحيات</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -36,16 +52,13 @@ const SasDashboard: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-border bg-card px-6">
-        <div className="flex gap-1">
-          {[
-            { id: "subscriptions" as SasTab, label: "الباقات والمشتركين", icon: Crown },
-            { id: "contracts" as SasTab, label: "العقود", icon: FileText },
-          ].map(tab => (
+      <div className="border-b border-border bg-card px-6 overflow-x-auto">
+        <div className="flex gap-1 min-w-max">
+          {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-arabic border-b-2 transition-all ${
+              className={`flex items-center gap-2 px-4 py-3 text-sm font-arabic border-b-2 transition-all whitespace-nowrap ${
                 activeTab === tab.id
                   ? "border-accent-water text-accent-water font-bold"
                   : "border-transparent text-muted-foreground hover:text-foreground"
@@ -60,7 +73,7 @@ const SasDashboard: React.FC = () => {
 
       {/* Content */}
       <main className="p-6 max-w-7xl mx-auto">
-        {activeTab === "subscriptions" ? <SubscriptionsManager /> : <ContractsManager />}
+        {renderContent()}
       </main>
     </div>
   );
