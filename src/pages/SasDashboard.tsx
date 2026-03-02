@@ -3,13 +3,15 @@ import SubscriptionsManager from "@/components/admin/SubscriptionsManager";
 import ContractsManager from "@/components/admin/ContractsManager";
 import InvoicesManager from "@/components/admin/InvoicesManager";
 import PermissionsManager from "@/components/admin/PermissionsManager";
+import StorefrontsManager from "@/components/admin/StorefrontsManager";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Crown, FileText, Receipt, Shield, CreditCard, BarChart3 } from "lucide-react";
+import { ArrowLeft, Crown, FileText, Receipt, Shield, Globe } from "lucide-react";
 
-type SasTab = "subscriptions" | "contracts" | "invoices" | "permissions";
+type SasTab = "subscriptions" | "storefronts" | "contracts" | "invoices" | "permissions";
 
 const tabs = [
   { id: "subscriptions" as SasTab, label: "الباقات والمشتركين", icon: Crown },
+  { id: "storefronts" as SasTab, label: "واجهات الشركاء", icon: Globe },
   { id: "contracts" as SasTab, label: "العقود", icon: FileText },
   { id: "invoices" as SasTab, label: "الفواتير", icon: Receipt },
   { id: "permissions" as SasTab, label: "الصلاحيات", icon: Shield },
@@ -21,6 +23,7 @@ const SasDashboard: React.FC = () => {
   const renderContent = () => {
     switch (activeTab) {
       case "subscriptions": return <SubscriptionsManager />;
+      case "storefronts": return <StorefrontsManager />;
       case "contracts": return <ContractsManager />;
       case "invoices": return <InvoicesManager />;
       case "permissions": return <PermissionsManager />;
