@@ -819,6 +819,165 @@ export type Database = {
         }
         Relationships: []
       }
+      supplier_delegates: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          full_name: string
+          id: string
+          is_contract_signee: boolean | null
+          national_id: string | null
+          nationality: string | null
+          phone: string | null
+          phone_verified: boolean | null
+          role_title: string | null
+          sort_order: number | null
+          supplier_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          full_name: string
+          id?: string
+          is_contract_signee?: boolean | null
+          national_id?: string | null
+          nationality?: string | null
+          phone?: string | null
+          phone_verified?: boolean | null
+          role_title?: string | null
+          sort_order?: number | null
+          supplier_id: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          is_contract_signee?: boolean | null
+          national_id?: string | null
+          nationality?: string | null
+          phone?: string | null
+          phone_verified?: boolean | null
+          role_title?: string | null
+          sort_order?: number | null
+          supplier_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supplier_delegates_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      supplier_documents: {
+        Row: {
+          doc_type: string
+          file_url: string | null
+          id: string
+          supplier_id: string
+          uploaded_at: string | null
+        }
+        Insert: {
+          doc_type: string
+          file_url?: string | null
+          id?: string
+          supplier_id: string
+          uploaded_at?: string | null
+        }
+        Update: {
+          doc_type?: string
+          file_url?: string | null
+          id?: string
+          supplier_id?: string
+          uploaded_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supplier_documents_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      supplier_profit_models: {
+        Row: {
+          bnpl_fee_bearer: string | null
+          bnpl_fee_rate: number | null
+          cash_commission_rate: number | null
+          commission_fixed: number | null
+          commission_rate: number | null
+          created_at: string | null
+          credit_limit: number | null
+          dropshipping_margin_type: string | null
+          dropshipping_margin_value: number | null
+          id: string
+          model_type: string
+          notes: string | null
+          settlement_cycle: string | null
+          status: string | null
+          subscription_extra_branch: number | null
+          subscription_main_branch: number | null
+          supplier_id: string
+          updated_at: string | null
+          warehouse_count: number | null
+        }
+        Insert: {
+          bnpl_fee_bearer?: string | null
+          bnpl_fee_rate?: number | null
+          cash_commission_rate?: number | null
+          commission_fixed?: number | null
+          commission_rate?: number | null
+          created_at?: string | null
+          credit_limit?: number | null
+          dropshipping_margin_type?: string | null
+          dropshipping_margin_value?: number | null
+          id?: string
+          model_type?: string
+          notes?: string | null
+          settlement_cycle?: string | null
+          status?: string | null
+          subscription_extra_branch?: number | null
+          subscription_main_branch?: number | null
+          supplier_id: string
+          updated_at?: string | null
+          warehouse_count?: number | null
+        }
+        Update: {
+          bnpl_fee_bearer?: string | null
+          bnpl_fee_rate?: number | null
+          cash_commission_rate?: number | null
+          commission_fixed?: number | null
+          commission_rate?: number | null
+          created_at?: string | null
+          credit_limit?: number | null
+          dropshipping_margin_type?: string | null
+          dropshipping_margin_value?: number | null
+          id?: string
+          model_type?: string
+          notes?: string | null
+          settlement_cycle?: string | null
+          status?: string | null
+          subscription_extra_branch?: number | null
+          subscription_main_branch?: number | null
+          supplier_id?: string
+          updated_at?: string | null
+          warehouse_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supplier_profit_models_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: true
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       supplier_subscriptions: {
         Row: {
           auto_renew: boolean | null
@@ -883,41 +1042,71 @@ export type Database = {
         Row: {
           active: boolean | null
           address: string | null
+          bank_name: string | null
+          business_type: string | null
+          cr_number: string | null
           created_at: string | null
           email: string | null
+          has_vat: boolean | null
+          iban: string | null
+          iban_certificate_url: string | null
           id: string
+          logo_url: string | null
           name_ar: string
           name_en: string | null
+          national_address: string | null
+          onboarding_status: string | null
           phone: string | null
           region_id: string | null
           updated_at: string | null
           user_id: string | null
+          vat_number: string | null
         }
         Insert: {
           active?: boolean | null
           address?: string | null
+          bank_name?: string | null
+          business_type?: string | null
+          cr_number?: string | null
           created_at?: string | null
           email?: string | null
+          has_vat?: boolean | null
+          iban?: string | null
+          iban_certificate_url?: string | null
           id?: string
+          logo_url?: string | null
           name_ar: string
           name_en?: string | null
+          national_address?: string | null
+          onboarding_status?: string | null
           phone?: string | null
           region_id?: string | null
           updated_at?: string | null
           user_id?: string | null
+          vat_number?: string | null
         }
         Update: {
           active?: boolean | null
           address?: string | null
+          bank_name?: string | null
+          business_type?: string | null
+          cr_number?: string | null
           created_at?: string | null
           email?: string | null
+          has_vat?: boolean | null
+          iban?: string | null
+          iban_certificate_url?: string | null
           id?: string
+          logo_url?: string | null
           name_ar?: string
           name_en?: string | null
+          national_address?: string | null
+          onboarding_status?: string | null
           phone?: string | null
           region_id?: string | null
           updated_at?: string | null
           user_id?: string | null
+          vat_number?: string | null
         }
         Relationships: [
           {
