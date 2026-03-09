@@ -26,6 +26,7 @@ const SasDashboard: React.FC = () => {
     switch (activeTab) {
       case "subscriptions": return <SubscriptionsManager />;
       case "storefronts": return <StorefrontsManager />;
+      case "profit_models": return <ProfitModelsManager />;
       case "contracts": return <ContractsManager />;
       case "invoices": return <InvoicesManager />;
       case "permissions": return <PermissionsManager />;
