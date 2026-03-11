@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Crown, Users, Globe, DollarSign, FileText, Receipt, TrendingUp, Server, Activity } from "lucide-react";
-import StatCard from "@/components/dashboard/StatCard";
-
+import { Crown, Users, Globe, DollarSign, FileText, Receipt, Server, Activity } from "lucide-react";
+import { motion } from "framer-motion";
 const SaasOverview: React.FC = () => {
   const [stats, setStats] = useState({
     suppliers: 0, activeSuppliers: 0, subscriptions: 0, storefronts: 0,
