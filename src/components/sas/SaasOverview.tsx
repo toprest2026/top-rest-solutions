@@ -45,11 +45,24 @@ const SaasOverview: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="إجمالي الموردين" value={stats.suppliers} icon={Users} trend={`${stats.activeSuppliers} نشط`} />
-        <StatCard title="الاشتراكات" value={stats.subscriptions} icon={Crown} />
-        <StatCard title="واجهات المتاجر" value={stats.storefronts} icon={Globe} />
-        <StatCard title="العقود" value={stats.contracts} icon={FileText} />
-      </div>
+        {[
+          { title: "إجمالي الموردين", value: stats.suppliers, sub: `${stats.activeSuppliers} نشط`, icon: Users, color: "text-primary" },
+          { title: "الاشتراكات", value: stats.subscriptions, icon: Crown, color: "text-accent-water" },
+          { title: "واجهات المتاجر", value: stats.storefronts, icon: Globe, color: "text-success" },
+          { title: "العقود", value: stats.contracts, icon: FileText, color: "text-warning" },
+        ].map((s, i) => (
+          <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
+            className="glass-card rounded-2xl p-5">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center">
+                <s.icon className={`w-5 h-5 ${s.color}`} />
+              </div>
+              <p className="text-sm text-muted-foreground">{s.title}</p>
+            </div>
+            <p className="font-display font-bold text-2xl text-foreground">{s.value}</p>
+            {s.sub && <p className="text-xs text-muted-foreground mt-1">{s.sub}</p>}
+          </motion.div>
+        ))}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="glass-card rounded-2xl p-5">
