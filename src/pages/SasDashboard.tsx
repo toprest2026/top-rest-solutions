@@ -1,86 +1,83 @@
 import React, { useState } from "react";
+import SasSidebar, { type SasSection } from "@/components/sas/SasSidebar";
+import SaasOverview from "@/components/sas/SaasOverview";
 import SubscriptionsManager from "@/components/admin/SubscriptionsManager";
 import ContractsManager from "@/components/admin/ContractsManager";
 import InvoicesManager from "@/components/admin/InvoicesManager";
 import PermissionsManager from "@/components/admin/PermissionsManager";
 import StorefrontsManager from "@/components/admin/StorefrontsManager";
 import ProfitModelsManager from "@/components/admin/ProfitModelsManager";
+import AppStoreManager from "@/components/sas/AppStoreManager";
+import PaymentGatewaysManager from "@/components/sas/PaymentGatewaysManager";
+import InfrastructureManager from "@/components/sas/InfrastructureManager";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Crown, FileText, Receipt, Shield, Globe, DollarSign } from "lucide-react";
-
-type SasTab = "subscriptions" | "storefronts" | "profit_models" | "contracts" | "invoices" | "permissions";
-
-const tabs = [
-  { id: "subscriptions" as SasTab, label: "الباقات والمشتركين", icon: Crown },
-  { id: "storefronts" as SasTab, label: "واجهات الشركاء", icon: Globe },
-  { id: "profit_models" as SasTab, label: "نماذج الربح", icon: DollarSign },
-  { id: "contracts" as SasTab, label: "العقود", icon: FileText },
-  { id: "invoices" as SasTab, label: "الفواتير", icon: Receipt },
-  { id: "permissions" as SasTab, label: "الصلاحيات", icon: Shield },
-];
+import { ArrowLeft, Store } from "lucide-react";
 
 const SasDashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<SasTab>("subscriptions");
+  const [activeSection, setActiveSection] = useState<SasSection>("overview");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const renderContent = () => {
-    switch (activeTab) {
+    switch (activeSection) {
+      case "overview": return <SaasOverview />;
       case "subscriptions": return <SubscriptionsManager />;
       case "storefronts": return <StorefrontsManager />;
       case "profit_models": return <ProfitModelsManager />;
       case "contracts": return <ContractsManager />;
       case "invoices": return <InvoicesManager />;
       case "permissions": return <PermissionsManager />;
+      case "app_store": return <AppStoreManager />;
+      case "payment_gateways": return <PaymentGatewaysManager />;
+      case "infrastructure": return <InfrastructureManager />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-muted/30 font-arabic" dir="rtl">
-      {/* Top Bar */}
-      <div className="bg-card border-b border-border px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-accent-water flex items-center justify-center">
-            <Crown className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <p className="font-display font-bold text-foreground text-sm">لوحة تحكم SaaS — إدارة المشتركين</p>
-            <p className="text-muted-foreground text-xs">الباقات والعقود والفواتير والصلاحيات</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <Link
-            to="/admin"
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent-water transition-colors font-arabic"
-          >
-            <span>لوحة التحكم</span>
-            <ArrowLeft className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-      </div>
+    <div className="flex h-screen bg-muted/30 font-arabic overflow-hidden" dir="rtl">
+      <SasSidebar
+        activeSection={activeSection}
+        onSectionChange={setActiveSection}
+        open={sidebarOpen}
+        onToggle={() => setSidebarOpen(!sidebarOpen)}
+      />
 
-      {/* Tabs */}
-      <div className="border-b border-border bg-card px-6 overflow-x-auto">
-        <div className="flex gap-1 min-w-max">
-          {tabs.map(tab => (
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top Bar */}
+        <div className="bg-card border-b border-border px-6 py-3 flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-3">
             <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-arabic border-b-2 transition-all whitespace-nowrap ${
-                activeTab === tab.id
-                  ? "border-accent-water text-accent-water font-bold"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground"
             >
-              <tab.icon className="w-4 h-4" />
-              {tab.label}
+              <div className="space-y-1">
+                <div className="w-4 h-0.5 bg-current" />
+                <div className="w-4 h-0.5 bg-current" />
+                <div className="w-4 h-0.5 bg-current" />
+              </div>
             </button>
-          ))}
+            <div>
+              <p className="font-display font-bold text-foreground text-sm">لوحة تحكم SaaS — توب رست</p>
+              <p className="text-muted-foreground text-xs font-arabic">إدارة شاملة للمنصة</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link to="/admin" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent-water transition-colors font-arabic">
+              <Store className="w-4 h-4" />
+              <span className="hidden sm:inline">لوحة التحكم</span>
+              <ArrowLeft className="w-3.5 h-3.5" />
+            </Link>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent-water to-primary flex items-center justify-center">
+                <span className="text-white text-xs font-bold">م</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Content */}
-      <main className="p-6 max-w-7xl mx-auto">
-        {renderContent()}
-      </main>
+        <main className="flex-1 overflow-y-auto p-6">
+          {renderContent()}
+        </main>
+      </div>
     </div>
   );
 };
