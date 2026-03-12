@@ -1,7 +1,7 @@
 import React from "react";
 import {
   LayoutDashboard, Crown, Globe, DollarSign, FileText, Receipt, Shield,
-  AppWindow, CreditCard, Server, ChevronRight, Settings, BarChart3, Users, HardDrive
+  AppWindow, CreditCard, Server, Palette, Image, FileCheck, Archive
 } from "lucide-react";
 
 export type SasSection =
@@ -14,7 +14,12 @@ export type SasSection =
   | "permissions"
   | "app_store"
   | "payment_gateways"
-  | "infrastructure";
+  | "infrastructure"
+  | "domains"
+  | "themes"
+  | "media"
+  | "zatca"
+  | "financial_archive";
 
 interface SasSidebarProps {
   activeSection: SasSection;
@@ -30,16 +35,21 @@ const mainNav = [
   { id: "profit_models" as SasSection, label: "نماذج الربح", icon: DollarSign },
   { id: "contracts" as SasSection, label: "العقود", icon: FileText },
   { id: "invoices" as SasSection, label: "الفواتير", icon: Receipt },
+  { id: "financial_archive" as SasSection, label: "الأرشيف المالي", icon: Archive },
 ];
 
 const platformNav = [
   { id: "app_store" as SasSection, label: "متجر التطبيقات", icon: AppWindow },
   { id: "payment_gateways" as SasSection, label: "بوابات الدفع", icon: CreditCard },
+  { id: "domains" as SasSection, label: "إدارة الدومينات", icon: Globe },
+  { id: "themes" as SasSection, label: "الثيمات والقوالب", icon: Palette },
+  { id: "media" as SasSection, label: "مركز الوسائط", icon: Image },
   { id: "infrastructure" as SasSection, label: "البنية التحتية", icon: Server },
 ];
 
 const systemNav = [
   { id: "permissions" as SasSection, label: "الصلاحيات", icon: Shield },
+  { id: "zatca" as SasSection, label: "الامتثال والزكاة", icon: FileCheck },
 ];
 
 const SasSidebar: React.FC<SasSidebarProps> = ({ activeSection, onSectionChange, open }) => {
@@ -72,7 +82,6 @@ const SasSidebar: React.FC<SasSidebarProps> = ({ activeSection, onSectionChange,
 
   return (
     <aside className={`admin-sidebar flex flex-col transition-all duration-300 flex-shrink-0 ${open ? "w-64" : "w-16"}`}>
-      {/* Logo */}
       <div className="p-4 border-b border-sidebar-border">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-accent-water flex items-center justify-center flex-shrink-0">
@@ -81,26 +90,17 @@ const SasSidebar: React.FC<SasSidebarProps> = ({ activeSection, onSectionChange,
           {open && (
             <div>
               <p className="text-sidebar-foreground font-display font-bold text-sm leading-tight">توب رست</p>
-              <p className="text-sidebar-primary text-xs">لوحة تحكم SaaS</p>
+              <p className="text-sidebar-primary text-xs">Super Admin</p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-        {renderGroup("إدارة الاشتراكات", mainNav)}
-        {renderGroup("المنصة", platformNav)}
-        {renderGroup("النظام", systemNav)}
+        {renderGroup("الإدارة المالية", mainNav)}
+        {renderGroup("المنصة والبنية التحتية", platformNav)}
+        {renderGroup("النظام والامتثال", systemNav)}
       </nav>
-
-      {/* Bottom */}
-      <div className="p-3 border-t border-sidebar-border">
-        <button className={`sidebar-item w-full ${!open ? "justify-center px-2" : ""}`}>
-          <Settings style={{ width: 18, height: 18 }} className="flex-shrink-0" />
-          {open && <span className="flex-1 text-right">إعدادات المنصة</span>}
-        </button>
-      </div>
     </aside>
   );
 };

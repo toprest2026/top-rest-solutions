@@ -9,6 +9,7 @@ import BannersManager from "@/components/admin/BannersManager";
 import WebhookManager from "@/components/admin/WebhookManager";
 import SubscriptionsManager from "@/components/admin/SubscriptionsManager";
 import ContractsManager from "@/components/admin/ContractsManager";
+import DriversManager from "@/components/admin/DriversManager";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Store } from "lucide-react";
 
@@ -17,6 +18,7 @@ export type AdminSection =
   | "products"
   | "orders"
   | "suppliers"
+  | "drivers"
   | "subscriptions"
   | "contracts"
   | "seo"
@@ -33,6 +35,7 @@ const AdminDashboard: React.FC = () => {
       case "products": return <ProductsManager />;
       case "orders": return <OrdersManager />;
       case "suppliers": return <SuppliersManager />;
+      case "drivers": return <DriversManager />;
       case "subscriptions": return <SubscriptionsManager />;
       case "contracts": return <ContractsManager />;
       case "seo": return <SeoManager />;
@@ -44,7 +47,6 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-muted/30 font-arabic overflow-hidden" dir="rtl">
-      {/* Sidebar */}
       <AdminSidebar
         activeSection={activeSection}
         onSectionChange={setActiveSection}
@@ -52,9 +54,7 @@ const AdminDashboard: React.FC = () => {
         onToggle={() => setSidebarOpen(!sidebarOpen)}
       />
 
-      {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top Bar */}
         <div className="bg-card border-b border-border px-6 py-3 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
             <button
@@ -74,11 +74,14 @@ const AdminDashboard: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3">
+            <Link to="/vendor" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent-water transition-colors font-arabic">
+              <Store className="w-4 h-4" />
+              <span className="hidden sm:inline">لوحة المورد</span>
+            </Link>
             <Link
               to="/"
               className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent-water transition-colors font-arabic"
             >
-              <Store className="w-4 h-4" />
               <span className="hidden sm:inline">المتجر</span>
               <ArrowLeft className="w-3.5 h-3.5" />
             </Link>
@@ -94,7 +97,6 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Content Area */}
         <main className="flex-1 overflow-y-auto p-6">
           {renderContent()}
         </main>
