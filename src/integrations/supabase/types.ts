@@ -303,6 +303,90 @@ export type Database = {
           },
         ]
       }
+      drivers: {
+        Row: {
+          city: string | null
+          created_at: string | null
+          driver_type: string
+          full_name: string
+          id: string
+          last_location_at: string | null
+          latitude: number | null
+          license_expiry: string | null
+          longitude: number | null
+          national_id: string | null
+          phone: string | null
+          rating: number | null
+          region_id: string | null
+          status: string
+          supplier_id: string | null
+          total_deliveries: number | null
+          updated_at: string | null
+          vehicle_plate: string | null
+          vehicle_type: string | null
+          wallet_balance: number | null
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string | null
+          driver_type?: string
+          full_name: string
+          id?: string
+          last_location_at?: string | null
+          latitude?: number | null
+          license_expiry?: string | null
+          longitude?: number | null
+          national_id?: string | null
+          phone?: string | null
+          rating?: number | null
+          region_id?: string | null
+          status?: string
+          supplier_id?: string | null
+          total_deliveries?: number | null
+          updated_at?: string | null
+          vehicle_plate?: string | null
+          vehicle_type?: string | null
+          wallet_balance?: number | null
+        }
+        Update: {
+          city?: string | null
+          created_at?: string | null
+          driver_type?: string
+          full_name?: string
+          id?: string
+          last_location_at?: string | null
+          latitude?: number | null
+          license_expiry?: string | null
+          longitude?: number | null
+          national_id?: string | null
+          phone?: string | null
+          rating?: number | null
+          region_id?: string | null
+          status?: string
+          supplier_id?: string | null
+          total_deliveries?: number | null
+          updated_at?: string | null
+          vehicle_plate?: string | null
+          vehicle_type?: string | null
+          wallet_balance?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "drivers_region_id_fkey"
+            columns: ["region_id"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "drivers_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       loyalty_transactions: {
         Row: {
           created_at: string | null
@@ -344,6 +428,50 @@ export type Database = {
             columns: ["order_id"]
             isOneToOne: false
             referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      media_files: {
+        Row: {
+          created_at: string | null
+          file_name: string
+          file_size: number | null
+          file_type: string | null
+          file_url: string
+          folder: string | null
+          id: string
+          supplier_id: string | null
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          file_name: string
+          file_size?: number | null
+          file_type?: string | null
+          file_url: string
+          folder?: string | null
+          id?: string
+          supplier_id?: string | null
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          file_name?: string
+          file_size?: number | null
+          file_type?: string | null
+          file_url?: string
+          folder?: string | null
+          id?: string
+          supplier_id?: string | null
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "media_files_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
             referencedColumns: ["id"]
           },
         ]

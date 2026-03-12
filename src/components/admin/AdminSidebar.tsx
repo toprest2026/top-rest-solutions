@@ -1,19 +1,7 @@
 import React from "react";
 import {
-  LayoutDashboard,
-  Package,
-  ShoppingBag,
-  Users,
-  Search,
-  Image,
-  Webhook,
-  ChevronRight,
-  Settings,
-  BarChart3,
-  Tag,
-  Truck,
-  Crown,
-  FileText,
+  LayoutDashboard, Package, ShoppingBag, Users, Search, Image, Webhook,
+  Settings, BarChart3, Tag, Truck, Crown, FileText
 } from "lucide-react";
 import { AdminSection } from "@/pages/AdminDashboard";
 
@@ -25,73 +13,21 @@ interface AdminSidebarProps {
 }
 
 const navItems = [
-  {
-    id: "overview" as AdminSection,
-    label: "نظرة عامة",
-    icon: LayoutDashboard,
-    badge: null,
-  },
-  {
-    id: "products" as AdminSection,
-    label: "المنتجات والوحدات",
-    icon: Package,
-    badge: null,
-  },
-  {
-    id: "orders" as AdminSection,
-    label: "الطلبات",
-    icon: ShoppingBag,
-    badge: "12",
-  },
-  {
-    id: "suppliers" as AdminSection,
-    label: "الموردون",
-    icon: Truck,
-    badge: null,
-  },
-  {
-    id: "subscriptions" as AdminSection,
-    label: "الاشتراكات — SaaS",
-    icon: Crown,
-    badge: null,
-  },
-  {
-    id: "contracts" as AdminSection,
-    label: "العقود والتعاقدات",
-    icon: FileText,
-  },
-  {
-    id: "banners" as AdminSection,
-    label: "البنرات والإعلانات",
-    icon: Image,
-    badge: null,
-  },
-  {
-    id: "seo" as AdminSection,
-    label: "تحسين SEO",
-    icon: Search,
-    badge: null,
-  },
-  {
-    id: "webhooks" as AdminSection,
-    label: "Webhooks والإشعارات",
-    icon: Webhook,
-    badge: null,
-  },
+  { id: "overview" as AdminSection, label: "نظرة عامة", icon: LayoutDashboard, badge: null },
+  { id: "products" as AdminSection, label: "المنتجات والوحدات", icon: Package, badge: null },
+  { id: "orders" as AdminSection, label: "الطلبات", icon: ShoppingBag, badge: "12" },
+  { id: "suppliers" as AdminSection, label: "الموردون", icon: Truck, badge: null },
+  { id: "drivers" as AdminSection, label: "السائقون", icon: Truck, badge: null },
+  { id: "subscriptions" as AdminSection, label: "الاشتراكات — SaaS", icon: Crown, badge: null },
+  { id: "contracts" as AdminSection, label: "العقود والتعاقدات", icon: FileText, badge: null },
+  { id: "banners" as AdminSection, label: "البنرات والإعلانات", icon: Image, badge: null },
+  { id: "seo" as AdminSection, label: "تحسين SEO", icon: Search, badge: null },
+  { id: "webhooks" as AdminSection, label: "Webhooks والإشعارات", icon: Webhook, badge: null },
 ];
 
-const AdminSidebar: React.FC<AdminSidebarProps> = ({
-  activeSection,
-  onSectionChange,
-  open,
-}) => {
+const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeSection, onSectionChange, open }) => {
   return (
-    <aside
-      className={`admin-sidebar flex flex-col transition-all duration-300 flex-shrink-0 ${
-        open ? "w-64" : "w-16"
-      }`}
-    >
-      {/* Logo */}
+    <aside className={`admin-sidebar flex flex-col transition-all duration-300 flex-shrink-0 ${open ? "w-64" : "w-16"}`}>
       <div className="p-4 border-b border-sidebar-border">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-accent-water flex items-center justify-center flex-shrink-0">
@@ -99,16 +35,13 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
           </div>
           {open && (
             <div>
-              <p className="text-sidebar-foreground font-display font-bold text-sm leading-tight">
-                توب رست
-              </p>
+              <p className="text-sidebar-foreground font-display font-bold text-sm leading-tight">توب رست</p>
               <p className="text-sidebar-primary text-xs">لوحة التحكم</p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
         {open && (
           <p className="text-sidebar-foreground/40 text-xs px-3 py-2 uppercase tracking-widest font-arabic">
@@ -120,12 +53,10 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
           <button
             key={item.id}
             onClick={() => onSectionChange(item.id)}
-            className={`sidebar-item w-full ${activeSection === item.id ? "active" : ""} ${
-              !open ? "justify-center px-2" : ""
-            }`}
+            className={`sidebar-item w-full ${activeSection === item.id ? "active" : ""} ${!open ? "justify-center px-2" : ""}`}
             title={!open ? item.label : undefined}
           >
-            <item.icon className="w-4.5 h-4.5 flex-shrink-0" style={{ width: 18, height: 18 }} />
+            <item.icon className="flex-shrink-0" style={{ width: 18, height: 18 }} />
             {open && (
               <>
                 <span className="flex-1 text-right">{item.label}</span>
@@ -145,37 +76,24 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({
           </p>
         )}
 
-        <button
-          className={`sidebar-item w-full ${!open ? "justify-center px-2" : ""}`}
-          title={!open ? "التقارير" : undefined}
-        >
+        <button className={`sidebar-item w-full ${!open ? "justify-center px-2" : ""}`}>
           <BarChart3 style={{ width: 18, height: 18 }} className="flex-shrink-0" />
           {open && <span className="flex-1 text-right">التقارير والتحليلات</span>}
         </button>
 
-        <button
-          className={`sidebar-item w-full ${!open ? "justify-center px-2" : ""}`}
-          title={!open ? "الكوبونات" : undefined}
-        >
+        <button className={`sidebar-item w-full ${!open ? "justify-center px-2" : ""}`}>
           <Tag style={{ width: 18, height: 18 }} className="flex-shrink-0" />
           {open && <span className="flex-1 text-right">الكوبونات والخصومات</span>}
         </button>
 
-        <button
-          className={`sidebar-item w-full ${!open ? "justify-center px-2" : ""}`}
-          title={!open ? "العملاء" : undefined}
-        >
+        <button className={`sidebar-item w-full ${!open ? "justify-center px-2" : ""}`}>
           <Users style={{ width: 18, height: 18 }} className="flex-shrink-0" />
           {open && <span className="flex-1 text-right">إدارة العملاء</span>}
         </button>
       </nav>
 
-      {/* Bottom */}
       <div className="p-3 border-t border-sidebar-border">
-        <button
-          className={`sidebar-item w-full ${!open ? "justify-center px-2" : ""}`}
-          title={!open ? "الإعدادات" : undefined}
-        >
+        <button className={`sidebar-item w-full ${!open ? "justify-center px-2" : ""}`}>
           <Settings style={{ width: 18, height: 18 }} className="flex-shrink-0" />
           {open && <span className="flex-1 text-right">إعدادات المتجر</span>}
         </button>

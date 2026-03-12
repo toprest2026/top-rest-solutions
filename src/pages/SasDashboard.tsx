@@ -10,6 +10,11 @@ import ProfitModelsManager from "@/components/admin/ProfitModelsManager";
 import AppStoreManager from "@/components/sas/AppStoreManager";
 import PaymentGatewaysManager from "@/components/sas/PaymentGatewaysManager";
 import InfrastructureManager from "@/components/sas/InfrastructureManager";
+import DomainsManager from "@/components/sas/DomainsManager";
+import ThemesManager from "@/components/sas/ThemesManager";
+import MediaCenter from "@/components/sas/MediaCenter";
+import ZatcaCompliance from "@/components/sas/ZatcaCompliance";
+import FinancialArchive from "@/components/sas/FinancialArchive";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Store } from "lucide-react";
 
@@ -29,6 +34,11 @@ const SasDashboard: React.FC = () => {
       case "app_store": return <AppStoreManager />;
       case "payment_gateways": return <PaymentGatewaysManager />;
       case "infrastructure": return <InfrastructureManager />;
+      case "domains": return <DomainsManager />;
+      case "themes": return <ThemesManager />;
+      case "media": return <MediaCenter />;
+      case "zatca": return <ZatcaCompliance />;
+      case "financial_archive": return <FinancialArchive />;
     }
   };
 
@@ -42,7 +52,6 @@ const SasDashboard: React.FC = () => {
       />
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top Bar */}
         <div className="bg-card border-b border-border px-6 py-3 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
             <button
@@ -56,8 +65,8 @@ const SasDashboard: React.FC = () => {
               </div>
             </button>
             <div>
-              <p className="font-display font-bold text-foreground text-sm">لوحة تحكم SaaS — توب رست</p>
-              <p className="text-muted-foreground text-xs font-arabic">إدارة شاملة للمنصة</p>
+              <p className="font-display font-bold text-foreground text-sm">Super Admin — توب رست</p>
+              <p className="text-muted-foreground text-xs font-arabic">المحرك المركزي للمنظومة</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -66,10 +75,8 @@ const SasDashboard: React.FC = () => {
               <span className="hidden sm:inline">لوحة التحكم</span>
               <ArrowLeft className="w-3.5 h-3.5" />
             </Link>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent-water to-primary flex items-center justify-center">
-                <span className="text-white text-xs font-bold">م</span>
-              </div>
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent-water to-primary flex items-center justify-center">
+              <span className="text-white text-xs font-bold">م</span>
             </div>
           </div>
         </div>
